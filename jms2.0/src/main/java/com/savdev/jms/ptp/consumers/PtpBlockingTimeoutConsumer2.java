@@ -1,4 +1,4 @@
-package com.savdev.consumers;
+package com.savdev.jms.ptp.consumers;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,14 +12,14 @@ import javax.jms.Queue;
  */
 public class PtpBlockingTimeoutConsumer2 {
 
-    @Resource(mappedName = "java:/jms/queue/ExpiryQueue")
-    private Queue defaultQueue;
+    @Resource(mappedName = "java:/testJmsQueueEntryName")
+    private Queue queue;
 
     @Inject
     JMSContext context;
 
     public String receiveMessage() {
-        try(JMSConsumer consumer = context.createConsumer(defaultQueue);){
+        try(JMSConsumer consumer = context.createConsumer(queue);){
             return consumer.receiveBody(String.class, TimeUnit.SECONDS.toMillis(10));
 
         }

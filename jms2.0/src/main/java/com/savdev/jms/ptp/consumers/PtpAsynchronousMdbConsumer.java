@@ -1,4 +1,4 @@
-package com.savdev.consumers;
+package com.savdev.jms.ptp.consumers;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;

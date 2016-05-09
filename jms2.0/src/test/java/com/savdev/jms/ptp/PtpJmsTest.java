@@ -1,4 +1,4 @@
-package com.savdev;
+package com.savdev.jms.ptp;
 
 import javax.inject.Inject;
 
@@ -11,18 +11,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.savdev.consumers.PtpAsynchronousMdbConsumer;
-import com.savdev.consumers.PtpBlockingTimeoutConsumer1;
-import com.savdev.consumers.PtpBlockingTimeoutConsumer2;
-import com.savdev.consumers.PtpConsumerUsedAutomaticResourceDefinition;
-import com.savdev.producers.PtpAutomaticResourceDefinitionProducer;
-import com.savdev.producers.PtpProducer;
-import com.savdev.producers.PtpProducer4AsyncMdbConsumer;
+import com.savdev.jms.ptp.consumers.PtpBlockingTimeoutConsumer1;
+import com.savdev.jms.ptp.consumers.PtpBlockingTimeoutConsumer2;
+import com.savdev.jms.ptp.producers.PtpProducer;
 
 /**
- * Created by alexandr on 19.04.16.
+ *
  */
-
 @RunWith(Arquillian.class)
 public class PtpJmsTest {
 
@@ -32,33 +27,17 @@ public class PtpJmsTest {
     PtpProducer ptpProducer;
 
     @Inject
-    PtpProducer4AsyncMdbConsumer ptpProducer4AsyncMdbConsumer;
-
-    @Inject
-    PtpAutomaticResourceDefinitionProducer automaticResourceDefinitionProducer;
-
-    @Inject
     PtpBlockingTimeoutConsumer1 consumer;
 
     @Inject
     PtpBlockingTimeoutConsumer2 consumer2;
 
-    @Inject
-    PtpAsynchronousMdbConsumer asynchronousConsumer;
-
-    @Inject
-    PtpConsumerUsedAutomaticResourceDefinition automaticResourceDefinitionConsumer;
-
     @Deployment
     public static JavaArchive createDeployment() {
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
                 .addClass(PtpProducer.class)
-                .addClass(PtpAutomaticResourceDefinitionProducer.class)
-                .addClass(PtpProducer4AsyncMdbConsumer.class)
                 .addClass(PtpBlockingTimeoutConsumer2.class)
                 .addClass(PtpBlockingTimeoutConsumer1.class)
-                .addClass(PtpAsynchronousMdbConsumer.class)
-                .addClass(PtpConsumerUsedAutomaticResourceDefinition.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(jar.toString(true));
         return jar;
@@ -94,26 +73,28 @@ public class PtpJmsTest {
     public void testSendMessageTwiceWith2PtpConsumers() {
         ptpProducer.sendMessage(MESSAGE_1);
         Assert.assertEquals(MESSAGE_1, consumer.receiveMessage());
+        Assert.assertNull(consumer2.receiveMessage());
         ptpProducer.sendMessage(MESSAGE_2);
         Assert.assertEquals(MESSAGE_2, consumer2.receiveMessage());
+        Assert.assertNull(consumer.receiveMessage());
     }
-
-    /*
-        With PTP only one client gets a message.
-        If message queue is empty, other consumers either just blocked or wait for a time out.
-     */
-    @Test
-    public void testAutomaticResourceDefinitionUsage() {
-        automaticResourceDefinitionProducer.sendMessage(MESSAGE_1);
-        Assert.assertEquals(MESSAGE_1, automaticResourceDefinitionConsumer.receiveMessage());
-    }
-
-    /*
-        With PTP only one client gets a message.
-        If message queue is empty, other consumers either just blocked or wait for a time out.
-     */
-    @Test
-    public void testSendMessageWithAsyncronousConsumer() {
-        ptpProducer4AsyncMdbConsumer.sendMessage(MESSAGE_1);
-    }
+//
+//    /*
+//        With PTP only one client gets a message.
+//        If message queue is empty, other consumers either just blocked or wait for a time out.
+//     */
+//    @Test
+//    public void testAutomaticResourceDefinitionUsage() {
+//        automaticResourceDefinitionProducer.sendMessage(MESSAGE_1);
+//        Assert.assertEquals(MESSAGE_1, automaticResourceDefinitionConsumer.receiveMessage());
+//    }
+//
+//    /*
+//        With PTP only one client gets a message.
+//        If message queue is empty, other consumers either just blocked or wait for a time out.
+//     */
+//    @Test
+//    public void testSendMessageWithAsyncronousConsumer() {
+//        ptpProducer4AsyncMdbConsumer.sendMessage(MESSAGE_1);
+//    }
 }

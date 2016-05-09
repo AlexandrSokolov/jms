@@ -376,6 +376,14 @@
                     <jms-queue name="DLQ">
                         <entry name="java:/jms/queue/DLQ"/>
                     </jms-queue>
+                    <jms-queue name="testJmsQueueName">
+                        <!--jndi name:-->
+                        <entry name="testJmsQueueEntryName"/>
+                    </jms-queue>
+                    <jms-topic name="jmsTestTopicName">
+                        <!--jndi name:-->
+                        <entry name="jmsTestTopicEntryName"/>
+                    </jms-topic>
                 </jms-destinations>
             </hornetq-server>
         </subsystem>

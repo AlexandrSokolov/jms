@@ -1,18 +1,19 @@
-package com.savdev.producers;
+package com.savdev.jms.pubsub.producers;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
-import javax.jms.Queue;
+import javax.jms.Topic;
 
 /**
  * Created by alexandr on 19.04.16.
  */
-public class PtpProducer {
+public class PubSubProducer {
 
-    @Resource(mappedName = "java:/jms/queue/ExpiryQueue")
-    private Queue defaultQueue;
+    @Resource(lookup = "jmsTestTopicEntryName")
+    private Topic topic;
+
 
 
     /*
@@ -28,7 +29,7 @@ public class PtpProducer {
 
     public void sendMessage(final String message)
     {
-        context.createProducer().send(defaultQueue, message);
-        System.out.printf("test");;
+        context.createProducer().send(topic, message);
+        System.out.printf("test");
     }
 }
