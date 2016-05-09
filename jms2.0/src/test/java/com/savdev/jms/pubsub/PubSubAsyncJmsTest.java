@@ -16,14 +16,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.savdev.jms.pubsub.synchconsumer.PubSubBlockingTimeoutConsumer1;
+import com.savdev.jms.pubsub.asynchconsumer.PubSubAsyncConsumer;
 import com.savdev.jms.pubsub.producer.PubSubProducer;
 
 /**
  */
 
 @RunWith(Arquillian.class)
-public class PubSubJmsTest {
+public class PubSubAsyncJmsTest {
 
     public static final String MESSAGE_1 = "Test message1";
 
@@ -31,13 +31,13 @@ public class PubSubJmsTest {
     PubSubProducer pubSubProducer;
 
     @Inject
-    PubSubBlockingTimeoutConsumer1 pubSubBlockingTimeoutConsumer1;
+    PubSubAsyncConsumer pubSubAsyncConsumer;
 
     @Deployment
     public static JavaArchive createDeployment() {
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
                 .addClass(PubSubProducer.class)
-                .addClass(PubSubBlockingTimeoutConsumer1.class)
+                .addClass(PubSubAsyncConsumer.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(jar.toString(true));
         return jar;
@@ -53,7 +53,7 @@ public class PubSubJmsTest {
             new Runnable() {
                 @Override
                 public void run() {
-                    pubSubBlockingTimeoutConsumer1.startListen(new Function<String, Void>() {
+                    pubSubAsyncConsumer.startListen(new Function<String, Void>() {
                         @Override
                         public Void apply(final String message) {
                             Assert.assertEquals(MESSAGE_1, message);
