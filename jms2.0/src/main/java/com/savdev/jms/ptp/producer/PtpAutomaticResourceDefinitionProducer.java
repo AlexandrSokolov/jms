@@ -1,4 +1,4 @@
-package com.savdev.jms.ptp.producers;
+package com.savdev.jms.ptp.producer;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;

@@ -11,9 +11,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.savdev.jms.ptp.consumers.PtpBlockingTimeoutConsumer1;
-import com.savdev.jms.ptp.consumers.PtpBlockingTimeoutConsumer2;
-import com.savdev.jms.ptp.producers.PtpProducer;
+import com.savdev.jms.ptp.synchconsumer.PtpBlockingTimeoutConsumer1;
+import com.savdev.jms.ptp.synchconsumer.PtpBlockingTimeoutConsumer2;
+import com.savdev.jms.ptp.producer.PtpProducer;
 
 /**
  *
@@ -67,7 +67,7 @@ public class PtpJmsTest {
 
     /*
         With PTP only one client gets a message.
-        If message queue is empty, other consumers either just blocked or wait for a time out.
+        If message queue is empty, other synchconsumer either just blocked or wait for a time out.
      */
     @Test
     public void testSendMessageTwiceWith2PtpConsumers() {
@@ -81,7 +81,7 @@ public class PtpJmsTest {
 //
 //    /*
 //        With PTP only one client gets a message.
-//        If message queue is empty, other consumers either just blocked or wait for a time out.
+//        If message queue is empty, other synchconsumer either just blocked or wait for a time out.
 //     */
 //    @Test
 //    public void testAutomaticResourceDefinitionUsage() {
@@ -91,7 +91,7 @@ public class PtpJmsTest {
 //
 //    /*
 //        With PTP only one client gets a message.
-//        If message queue is empty, other consumers either just blocked or wait for a time out.
+//        If message queue is empty, other synchconsumer either just blocked or wait for a time out.
 //     */
 //    @Test
 //    public void testSendMessageWithAsyncronousConsumer() {

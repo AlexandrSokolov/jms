@@ -1,4 +1,4 @@
-package com.savdev.jms.ptp.consumers;
+package com.savdev.jms.ptp.synchconsumer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +23,7 @@ public class PtpBlockingTimeoutConsumer1 {
         //never use: context.createConsumer(queue).receiveBody(String.class, TimeUnit.SECONDS.toMillis(10));
         //consumer must be closed
         try(JMSConsumer consumer = context.createConsumer(queue);){
-            return consumer.receiveBody(String.class, TimeUnit.SECONDS.toMillis(10));
+            return consumer.receiveBody(String.class, TimeUnit.SECONDS.toMillis(5));
 
         }
     }
